@@ -12,8 +12,14 @@ function setup() {
     let x = random(width);
     let y = random(height);
     let r = random(20, 40);
-    let i = random(-1, 1) > 0 ? r : r * -1;
-    wires[index] = new Wire(x, y, r, i);
+    //let omega = random(0.01, 0.005);
+    //let phase = random(-Math.PI, Math.PI);
+
+    let omega = 0.01;
+    let phase = 0;
+
+    let i = r * 5;
+    wires[index] = new Wire(x, y, r, i, omega, phase);
   }
 
 }
@@ -21,6 +27,10 @@ function setup() {
 function draw() {
 
   background(51);
+
+  wires.forEach(wire => {
+    wire.i = wire.i_max * cos(wire.omega * frameCount + wire.phase);
+  });
 
   colorMode(HSB);
   for (let i = 0; i < nForces; i++) {
@@ -81,11 +91,14 @@ function mouseReleased() {
 
 
 class Wire {
-  constructor(x, y, r, i) {
+  constructor(x, y, r, i_max, omega, phase) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.i = i;
+    this.phase = phase;
+    this.i_max = i_max;
+    this.i = 0;
+    this.omega = omega;
     this.offsetX = 0;
     this.offsetY = 0;
     this.dragging = false;
@@ -102,12 +115,12 @@ class Wire {
     strokeWeight(3);
 
     if (this.i > 0) {
-      fill(255, 0, 0);
+      fill(map(this.i, 0, this.i_max, 0, 255), 0, 0);
       ellipse(this.x, this.y, this.r * 2);
       strokeWeight(10);
       point(this.x, this.y);
     } else {
-      fill(0, 0, 255);
+      fill(0, 0, -map(this.i, -this.i_max, 0, -255, 0));
       ellipse(this.x, this.y, this.r * 2);
       strokeWeight(6);
       line(this.x + (this.r / 2), this.y + (this.r / 2), this.x - (this.r / 2), this.y - (this.r / 2));
