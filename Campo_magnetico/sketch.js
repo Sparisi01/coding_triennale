@@ -1,8 +1,8 @@
 let wires = [];
-let nWires = 2;
+let nWires = 6;
 
 let vecLenght = 15;
-let nForces = 30;
+let nForces = 40;
 let force = [nForces][nForces];
 
 function setup() {
@@ -11,14 +11,14 @@ function setup() {
   for (let index = 0; index < nWires; index++) {
     let x = random(width);
     let y = random(height);
-    let r = random(20, 40);
-    //let omega = random(0.01, 0.005);
-    //let phase = random(-Math.PI, Math.PI);
+    let r = random(15, 40);
 
-    let omega = 0.01;
-    let phase = 0;
+    let omega = random(0.01, 0.005) * 5;
+    //let omega = 0.1;
 
-    let i = r * 5;
+    let phase = random(-1, 1) * Math.PI;
+
+    let i = r * 3;
     wires[index] = new Wire(x, y, r, i, omega, phase);
   }
 
@@ -45,6 +45,7 @@ function draw() {
       stroke(map(intensity, 0, 0.5, 0, 360), 255, 255);
       strokeWeight(2);
       line(posX, posY, posX + normVector.x * vecLenght, posY + normVector.y * vecLenght);
+
     }
   }
 

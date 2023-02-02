@@ -1,5 +1,5 @@
 let particles = [];
-let nParticle = 3;
+let nParticle = 1;
 
 let vecLenght = 15;
 let nForces = 30;
